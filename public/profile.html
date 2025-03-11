@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile - Coding Arena</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* Simple dropdown for profile hover */
+    .profile-menu {
+      position: relative;
+      display: inline-block;
+    }
+    .profile-menu-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+    .profile-menu-content a {
+      color: #333;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+    .profile-menu-content a:hover { background-color: #f1f1f1; }
+    .profile-menu:hover .profile-menu-content { display: block; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="profile-menu">
+        <h1>Coding Arena</h1>
+        <div class="profile-menu-content">
+          <a href="#" onclick="showLogin()">Login / Logout</a>
+          <a href="profile.html">View Profile</a>
+        </div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="problems.html">Problems</a></li>
+          <li><a href="leaderboard.html">Leaderboard</a></li>
+          <li><a href="forum.html">Community</a></li>
+          <li><a href="challenge.html">Challenge</a></li>
+          <li><a href="skills.html">Skills</a></li>
+        </ul>
+      </nav>
+      <button id="theme-toggle">Toggle Dark/Light Mode</button>
+    </div>
+  </header>
+  <main>
+    <div class="container profile">
+      <h2>User Profile</h2>
+      <!-- In a real app, populate these dynamically -->
+      <img src="/images/default-profile.png" alt="Profile Photo" width="150" height="150">
+      <p>Name: John Doe</p>
+      <p>Email: john@example.com</p>
+      <h3>Course Completion</h3>
+      <!-- Placeholder for a pie chart (use Chart.js or similar in a real implementation) -->
+      <div class="pie-chart">80% Completed</div>
+      <h3>Concept Knowledge</h3>
+      <p>Algorithms, Data Structures, Dynamic Programming</p>
+    </div>
+  </main>
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Coding Arena. All Rights Reserved.</p>
+    </div>
+  </footer>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/script.js"></script>
+</body>
+</html>

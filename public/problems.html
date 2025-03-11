@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>RIORSKILLS - Problems</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <!-- Navigation Bar -->
+  <nav class="flex items-center justify-between bg-black px-8 py-4 text-white sticky top-0 z-50">
+    <div class="text-white text-3xl font-bold">RIORSKILLS</div>
+    <ul class="flex space-x-6">
+      <li><a href="index.html" class="hover:text-red-500">Home</a></li>
+      <li><a href="problems.html" class="hover:text-red-500">Problems</a></li>
+      <li><a href="problemDetails.html" class="hover:text-red-500">Problem Detail</a></li>
+      <li><a href="submission.html" class="hover:text-red-500">Submit</a></li>
+      <li><a href="profile.html" class="hover:text-red-500">Profile</a></li>
+    </ul>
+    <button id="theme-toggle" class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700 transition">Toggle Dark/Light Mode</button>
+  </nav>
+
+  <main class="container mx-auto p-8">
+    <h2 class="text-3xl font-bold mb-6">Problems</h2>
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white">
+        <thead>
+          <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+            <th class="py-3 px-6 text-left">#</th>
+            <th class="py-3 px-6 text-left">Title</th>
+            <th class="py-3 px-6 text-left">Difficulty</th>
+          </tr>
+        </thead>
+        <tbody id="problemsTable" class="text-gray-600 text-sm font-light">
+          <!-- Dynamically loaded problems -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer class="bg-black text-white text-center py-4">
+    &copy; 2025 RIORSKILLS. All Rights Reserved.
+  </footer>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/script.js"></script>
+  <script>
+    async function loadProblems() {
+      try {
+        const res = await fetch('/api/problems');
+        const problems = await res.json();
+        const table = document.getElementById('problemsTable');
+        table.innerHTML = '';
+        problems.forEach(problem => {
+          table.innerHTML += `
+            <tr class="border-b border-gray-200 hover:bg-gray-100 cursor-pointer"
+                onclick="location.href='problemDetails.html?id=${problem.id}'">
+              <td class="py-3 px-6">${problem.id}</td>
+              <td class="py-3 px-6">${problem.title}</td>
+              <td class="py-3 px-6 capitalize">${problem.difficulty}</td>
+            </tr>
+          `;
+        });
+      } catch (error) {
+        console.error("Error loading problems", error);
+      }
+    }
+    loadProblems();
+  </script>
+</body>
+</html>

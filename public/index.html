@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RIORSKILLS - Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-r from-indigo-400 via-pink-400 to-red-400 text-gray-900">
+  <!-- Nav Bar -->
+  <nav class="flex items-center justify-between bg-black px-8 py-4 text-white sticky top-0 z-50">
+    <div class="text-white text-3xl font-bold">RIORSKILLS</div>
+    <ul class="flex space-x-6">
+      <li><a href="index.html" class="hover:text-red-500">Home</a></li>
+      <li><a href="problems.html" class="hover:text-red-500">Problems</a></li>
+      <li><a href="problemDetails.html" class="hover:text-red-500">Problem Detail</a></li>
+      <li><a href="submission.html" class="hover:text-red-500">Submit</a></li>
+      <li><a href="profile.html" class="hover:text-red-500">Profile</a></li>
+    </ul>
+    <button id="theme-toggle" class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700 transition">
+      Toggle Dark/Light Mode
+    </button>
+  </nav>
+
+  <!-- Hero Section -->
+  <main class="container mx-auto p-8 text-center">
+    <h1 class="text-4xl font-bold text-white drop-shadow-lg">Welcome to RIORSKILLS</h1>
+    <p class="mt-4 text-lg text-gray-200">A next-gen coding platform inspired by LeetCode. Solve challenges, get AI help, and grow your skills!</p>
+    <button onclick="location.href='problems.html'" class="mt-6 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-lg shadow-md hover:from-purple-600 hover:to-pink-600 transition duration-300">View Problems</button>
+
+    <!-- Unique Feature: Featured AI Recommender -->
+    <div class="mt-10 bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-2xl font-bold mb-4">AI Course Recommender</h2>
+      <p class="text-gray-700 mb-4">Tell us what you're interested in, and our AI will suggest a roadmap for you!</p>
+      <input id="aiCourseInput" type="text" class="border p-2 rounded w-2/3" placeholder="e.g. data structures, web dev" />
+      <button onclick="getAICourseSuggestion()" class="ml-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">Get Suggestion</button>
+      <p id="aiCourseOutput" class="mt-4 text-gray-800"></p>
+    </div>
+  </main>
+
+  <footer class="bg-gradient-to-r from-pink-700 to-yellow-500 text-white text-center py-5 shadow-xl">
+    &copy; 2025 RIORSKILLS. All Rights Reserved.
+  </footer>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/script.js"></script>
+  <script src="/js/antiCheat.js"></script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Leaderboard - Coding Arena</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Coding Arena</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="leaderboard.html">Leaderboard</a></li>
+          <li><a href="forum.html">Forum</a></li>
+          <li><a href="challenge.html">Challenge</a></li>
+        </ul>
+      </nav>
+      <button id="theme-toggle">Toggle Dark/Light Mode</button>
+    </div>
+  </header>
+  <main>
+    <div class="container">
+      <h2>Top Coders Leaderboard</h2>
+      <table class="leaderboard">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>User</th>
+            <th>Score</th>
+            <th>Problems Solved</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Alice</td>
+            <td>1500</td>
+            <td>75</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Bob</td>
+            <td>1450</td>
+            <td>70</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Charlie</td>
+            <td>1400</td>
+            <td>68</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Coding Arena. All Rights Reserved.</p>
+    </div>
+  </footer>
+<!-- Place these just before the closing </body> tag -->
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/script.js"></script>
+</body>
+</html>

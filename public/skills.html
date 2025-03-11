@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Skills - Coding Arena</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Coding Arena</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="skills.html">Skills</a></li>
+          <li><a href="profile.html">Profile</a></li>
+        </ul>
+      </nav>
+      <button id="theme-toggle">Toggle Dark/Light Mode</button>
+    </div>
+  </header>
+  <main>
+    <div class="container skills">
+      <h2>Get Your Personalized Roadmap</h2>
+      <form id="skills-form">
+        <label for="known">What do you already know?</label>
+        <input type="text" id="known" placeholder="e.g., loops, arrays">
+        <br><br>
+        <label for="desired">What skill do you need?</label>
+        <input type="text" id="desired" placeholder="e.g., dynamic programming">
+        <br><br>
+        <button type="submit">Get Recommendations</button>
+      </form>
+      <div id="recommendation"></div>
+    </div>
+  </main>
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Coding Arena. All Rights Reserved.</p>
+    </div>
+  </footer>
+  <script>
+    document.getElementById('skills-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const known = document.getElementById('known').value;
+      const desired = document.getElementById('desired').value;
+      try {
+        const response = await fetch('/api/skills/recommend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ known, desired })
+        });
+        const data = await response.json();
+        document.getElementById('recommendation').textContent = data.recommendations.roadmap;
+      } catch (err) {
+        document.getElementById('recommendation').textContent = 'Recommendation failed.';
+      }
+    });
+  </script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/script.js"></script>
+</body>
+</html>

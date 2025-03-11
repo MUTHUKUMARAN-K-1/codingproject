@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Challenge - Coding Arena</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Coding Arena</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="challenge.html">Challenge</a></li>
+          <li><a href="profile.html">Profile</a></li>
+        </ul>
+      </nav>
+      <button id="theme-toggle">Toggle Dark/Light Mode</button>
+    </div>
+  </header>
+  <main>
+    <div class="container challenge">
+      <h2>Challenges</h2>
+      <!-- Category Tabs with Search -->
+      <div class="challenge-categories">
+        <button class="category-btn" data-category="easy">Easy</button>
+        <button class="category-btn" data-category="medium">Medium</button>
+        <button class="category-btn" data-category="hard">Hard</button>
+        <input type="text" id="challenge-search" placeholder="Search by concept, qn no, or name">
+      </div>
+      <!-- AI Recommendation Chat -->
+      <div class="ai-chat">
+        <h3>Need Guidance? Chat with our AI</h3>
+        <div class="chat-box">
+          <!-- Chat messages will appear here -->
+        </div>
+        <input type="text" id="ai-input" placeholder="Ask a question...">
+        <button id="ai-send">Send</button>
+      </div>
+      <!-- Challenge Problem Section -->
+      <div class="challenge-problem">
+        <h3>Challenge: Sum of Two Numbers</h3>
+        <p>Write a function that returns the sum of two numbers.</p>
+        <div class="timer">
+          Time Left: <span id="time-left">60</span> seconds
+        </div>
+        <textarea id="challenge-code" placeholder="Write your code here..."></textarea>
+        <button id="challenge-submit">Submit Code</button>
+        <pre id="challenge-result"></pre>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Coding Arena. All Rights Reserved.</p>
+    </div>
+  </footer>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/script.js"></script>
+  <script>
+    // Example: Prevent copy-paste on challenge textarea
+    const challengeCode = document.getElementById('challenge-code');
+    if (challengeCode) {
+      challengeCode.addEventListener('copy', (e) => { e.preventDefault(); });
+      challengeCode.addEventListener('paste', (e) => { e.preventDefault(); });
+    }
+
+    // Example: Detect tab switching (when window loses focus)
+    let tabSwitched = false;
+    window.addEventListener('blur', () => { tabSwitched = true; });
+    window.addEventListener('focus', () => {
+      if (tabSwitched) {
+        const password = prompt("Enter your password to resume (if you switched tabs dishonestly, honest points won't increase):");
+        // Validate password (this is a dummy example)
+        if (password !== "yourpassword") {
+          alert("Invalid password. Honest points will not be awarded.");
+        }
+        tabSwitched = false;
+      }
+    });
+  </script>
+</body>
+</html>
+

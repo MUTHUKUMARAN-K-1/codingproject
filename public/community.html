@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Community - Coding Arena</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Coding Arena</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="community.html">Community</a></li>
+          <li><a href="profile.html">Profile</a></li>
+        </ul>
+      </nav>
+      <button id="theme-toggle">Toggle Dark/Light Mode</button>
+    </div>
+  </header>
+  <main>
+    <div class="container">
+      <h2>Community</h2>
+      <!-- Sidebar for Channels -->
+      <div class="community-container">
+        <div class="sidebar">
+          <h3>Channels</h3>
+          <ul>
+            <li><a href="#">General</a></li>
+            <li><a href="#">Algorithms</a></li>
+            <li><a href="#">Web Dev</a></li>
+            <li><a href="#">Job & Internships</a></li>
+          </ul>
+          <button>Create Channel</button>
+        </div>
+        <!-- Main Chat Area -->
+        <div class="chat-area">
+          <h3>General Channel</h3>
+          <!-- Chat messages (would be loaded dynamically) -->
+          <div class="chat-box">
+            <div class="chat-message">User1: Welcome everyone!</div>
+            <div class="chat-message">User2: Hi there!</div>
+          </div>
+          <!-- Individual Chat Popup (could be a modal or a separate section) -->
+          <div class="individual-chat">
+            <h4>Chat with User3</h4>
+            <div class="chat-box">
+              <div class="chat-message">User3: How's it going?</div>
+            </div>
+            <input type="text" placeholder="Type your message">
+            <button>Send</button>
+          </div>
+          <!-- Create Post Section -->
+          <div class="create-post">
+            <h4>Create a Post</h4>
+            <textarea placeholder="Share your thoughts..."></textarea>
+            <button>Post</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Coding Arena. All Rights Reserved.</p>
+    </div>
+  </footer>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/script.js"></script>
+</body>
+</html>

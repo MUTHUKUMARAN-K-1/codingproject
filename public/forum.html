@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Forum - Coding Arena</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Coding Arena</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="forum.html">Forum</a></li>
+          <li><a href="leaderboard.html">Leaderboard</a></li>
+          <li><a href="challenge.html">Challenge</a></li>
+        </ul>
+      </nav>
+      <button id="theme-toggle">Toggle Dark/Light Mode</button>
+    </div>
+  </header>
+  <main>
+    <div class="container">
+      <h2>Discussion Forum</h2>
+      <div class="forum-post" data-post-id="1">
+        <h3>Welcome to the Forum!</h3>
+        <p>Feel free to discuss coding challenges and share tips with your peers.</p>
+        <button class="like-btn" onclick="likePost(1)">Like (<span id="like-count-1">0</span>)</button>
+      </div>
+      <div class="forum-post" data-post-id="2">
+        <h3>Challenge of the Week</h3>
+        <p>What's your approach to solving dynamic programming problems?</p>
+        <button class="like-btn" onclick="likePost(2)">Like (<span id="like-count-2">0</span>)</button>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Coding Arena. All Rights Reserved.</p>
+    </div>
+  </footer>
+  <script src="/js/script.js"></script>
+  <!-- Place these just before the closing </body> tag -->
+<script src="/socket.io/socket.io.js"></script>
+</body>
+</html>

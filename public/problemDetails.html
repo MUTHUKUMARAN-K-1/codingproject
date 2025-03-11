@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RIORSKILLS - Problem Details</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Monaco Editor -->
+  <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.34.1/min/vs/loader.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    /* Container resembling LeetCode’s split layout */
+    .split-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .problem-panel, .editor-panel {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 1rem;
+      min-width: 300px;
+    }
+    .problem-panel {
+      flex: 1 1 45%;
+    }
+    .editor-panel {
+      flex: 1 1 45%;
+      display: flex;
+      flex-direction: column;
+    }
+    #editorContainer {
+      flex: 1;
+      border: 1px solid #ccc;
+      margin-bottom: 1rem;
+    }
+    /* Multi-case testcases area (like LeetCode's "Case 1, Case 2, Case 3" tabs) */
+    .testcase-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .testcase-tab {
+      padding: 0.4rem 0.6rem;
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .testcase-tab.active {
+      background: #eee;
+      border-color: #999;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <!-- Minimal Navigation Bar -->
+  <header class="bg-black text-white px-6 py-4 flex justify-between items-center">
+    <div class="text-2xl font-bold">RIORSKILLS</div>
+    <nav class="space-x-4">
+      <a href="index.html" class="hover:text-red-500">Home</a>
+      <a href="problems.html" class="hover:text-red-500">Problems</a>
+      <a href="profile.html" class="hover:text-red-500">Profile</a>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto p-4">
+    <h1 id="problemTitle" class="text-3xl font-bold mb-4">Problem Title</h1>
+    <div class="split-container">
+      <!-- Left Panel: Problem Statement -->
+      <div class="problem-panel">
+        <h2 class="text-xl font-semibold mb-2">Description</h2>
+        <p id="problemDescription" class="mb-4">
+          <!-- loaded from backend -->
+          ...
+        </p>
+        <h2 class="text-xl font-semibold mb-2">Examples</h2>
+        <div id="problemExamples" class="mb-4">
+          <!-- loaded from backend -->
+          ...
+        </div>
+        <h2 class="text-xl font-semibold mb-2">Constraints</h2>
+        <div id="problemConstraints" class="text-red-700 mb-4">
+          <!-- loaded from backend -->
+          ...
+        </div>
+        <h2 class="text-xl font-semibold mb-2">Hints</h2>
+        <div id="problemHints" class="text-indigo-600">
+          <!-- loaded from backend -->
+          ...
+        </div>
+      </div>
+
+      <!-- Right Panel: Code Editor & Testcases -->
+      <div class="editor-panel">
+        <!-- Code Editor -->
+        <div id="editorContainer"></div>
+        <!-- Action Buttons -->
+        <div class="flex space-x-2 mb-2">
+          <select id="languageSelect" class="border p-1 rounded">
+            <option value="cpp">C++</option>
+            <option value="java">Java</option>
+            <option value="python">Python</option>
+            <option value="javascript" selected>JavaScript</option>
+          </select>
+          <button id="aiHelpBtn" class="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600">AI Help</button>
+          <button id="runCodeBtn" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Run</button>
+          <button id="submitCodeBtn" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">Submit</button>
+          <button id="solutionBtn" class="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600">View Solution</button>
+        </div>
+
+        <!-- Multi-case Testcases, like "Case 1, Case 2, Case 3" tabs -->
+        <div class="testcase-panel">
+          <h3 class="text-lg font-semibold mb-2">Testcases</h3>
+          <div class="testcase-tabs" id="testcaseTabs">
+            <!-- We'll add "Case 1," "Case 2," etc. in JavaScript -->
+          </div>
+          <div id="testcaseContent" class="border p-2 rounded bg-gray-50">
+            <!-- The input fields for each testcase appear here -->
+          </div>
+          <button id="testcaseRunBtn" class="bg-blue-500 text-white px-4 py-2 mt-2 rounded hover:bg-blue-600">
+            Run Selected Case
+          </button>
+        </div>
+
+        <!-- Result Panel -->
+        <div id="resultPanel" class="mt-4 hidden">
+          <h3 class="text-lg font-semibold mb-2">Output / Errors</h3>
+          <div id="resultOutput" class="bg-white p-2 rounded shadow mb-2"></div>
+          <!-- Official Solution -->
+          <div id="solutionSection" class="p-2 bg-white rounded shadow hidden">
+            <h4 class="font-bold mb-1">Official Solution</h4>
+            <pre id="solutionText"></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- Optional: antiCheat.js if you want tab/copy/paste detection -->
+  <script src="/js/antiCheat.js"></script>
+  <script>
+    let editor;
+    let currentProblemId = new URLSearchParams(window.location.search).get('id') || 1;
+    // We'll store multiple testcases here for demonstration
+    let testcases = [
+      { name: "Case 1", input: "s=aa, p=a", active: true },
+      { name: "Case 2", input: "s=aa, p=a*", active: false },
+      { name: "Case 3", input: "s=ab, p=.*", active: false }
+    ];
+
+    // 1) Fetch problem details
+    async function fetchProblemDetails() {
+      try {
+        const res = await fetch(`/api/problems/${currentProblemId}`);
+        const problem = await res.json();
+        document.getElementById('problemTitle').textContent = problem.title || 'Problem';
+        document.getElementById('problemDescription').textContent = problem.description || 'No description.';
+        document.getElementById('problemExamples').textContent = problem.examples || 'No examples.';
+        document.getElementById('problemConstraints').textContent = problem.constraints || 'No constraints.';
+        document.getElementById('problemHints').textContent = problem.hints || 'No hints.';
+        initMonacoEditor(problem.functionSignature);
+      } catch (err) {
+        console.error('Error fetching problem:', err);
+      }
+    }
+
+    // 2) Initialize Monaco Editor with a default or provided function signature
+    function initMonacoEditor(signature) {
+      const defaultSig = signature ||
+        "class Solution {\npublic:\n    bool isMatch(string s, string p) {\n        // Your code here\n    }\n};\n";
+      require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.34.1/min/vs' }});
+      require(['vs/editor/editor.main'], function() {
+        editor = monaco.editor.create(document.getElementById('editorContainer'), {
+          value: defaultSig,
+          language: 'cpp',
+          theme: 'vs-light',
+          readOnly: false,
+          automaticLayout: true
+        });
+      });
+    }
+
+    // 3) AI Help
+    document.getElementById('aiHelpBtn').addEventListener('click', async () => {
+      try {
+        const res = await fetch(`/api/problems/${currentProblemId}/aihelp`);
+        const data = await res.json();
+        alert('AI Suggestion: ' + data.suggestion);
+      } catch (err) {
+        alert('AI help failed');
+        console.error(err);
+      }
+    });
+
+    // 4) Multi-case testcases
+    function loadTestcaseTabs() {
+      const tabsContainer = document.getElementById('testcaseTabs');
+      tabsContainer.innerHTML = '';
+      testcases.forEach((tc, idx) => {
+        const tab = document.createElement('div');
+        tab.classList.add('testcase-tab');
+        if (tc.active) tab.classList.add('active');
+        tab.textContent = tc.name;
+        tab.addEventListener('click', () => {
+          testcases.forEach(t => t.active = false);
+          tc.active = true;
+          loadTestcaseTabs();
+          loadTestcaseContent();
+        });
+        tabsContainer.appendChild(tab);
+      });
+      loadTestcaseContent();
+    }
+    function loadTestcaseContent() {
+      const contentDiv = document.getElementById('testcaseContent');
+      const activeTC = testcases.find(t => t.active);
+      contentDiv.textContent = activeTC.input;
+    }
+
+    // 5) “Run” a single testcase with your real code execution route
+    document.getElementById('testcaseRunBtn').addEventListener('click', async () => {
+      runCodeWithTestcase();
+    });
+    async function runCodeWithTestcase() {
+      if (!editor) return;
+      const code = editor.getValue();
+      const language = document.getElementById('languageSelect').value;
+      // usageData if you have antiCheat
+      const usageData = window.usageData || { honest: true };
+      const activeTC = testcases.find(t => t.active) || { name: "Case X", input: "" };
+
+      try {
+        // In a real scenario, you'd call a "run" endpoint that compiles and runs code
+        // e.g. POST /api/problems/:id/run
+        // We'll simulate here:
+        const outputDiv = document.getElementById('resultOutput');
+        const resultPanel = document.getElementById('resultPanel');
+        resultPanel.classList.remove('hidden');
+
+        // Example of how you might handle a real response:
+        // const res = await fetch(`/api/problems/${currentProblemId}/run`, {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify({ code, language, usageData, testcase: activeTC.input })
+        // });
+        // const data = await res.json();
+
+        // Simulate an “Accepted” or “Compilation Error”:
+        // data.status = "ACCEPTED"; or data.status = "COMPILE_ERROR"; etc.
+        const data = {
+          status: "ACCEPTED",
+          stdout: `Code length: ${code.length}\nTestcase input: ${activeTC.input}`,
+          stderr: "",
+          compile_output: "",
+          verdict: "Accepted"
+        };
+
+        if (data.status === "COMPILE_ERROR") {
+          outputDiv.innerHTML = `<p class="text-red-600 font-bold">Compilation Error:</p><pre>${data.compile_output}</pre>`;
+        } else if (data.status === "RUNTIME_ERROR") {
+          outputDiv.innerHTML = `<p class="text-red-600 font-bold">Runtime Error:</p><pre>${data.stderr}</pre>`;
+        } else if (data.status === "WRONG_ANSWER") {
+          outputDiv.innerHTML = `<p class="text-red-600 font-bold">Wrong Answer</p><p>Expected: ???, Got: ???</p>`;
+        } else if (data.status === "ACCEPTED") {
+          outputDiv.innerHTML = `<p class="text-green-600 font-bold">Accepted!</p><pre>${data.stdout}</pre>`;
+        } else {
+          outputDiv.innerHTML = `<p>Unknown result</p>`;
+        }
+      } catch (err) {
+        console.error("Error running code with testcase:", err);
+      }
+    }
+
+    // 6) Submit Code
+    document.getElementById('submitCodeBtn').addEventListener('click', async () => {
+      if (!editor) return;
+      const code = editor.getValue();
+      const language = document.getElementById('languageSelect').value;
+      const usageData = window.usageData || { honest: true };
+      try {
+        const res = await fetch(`/api/problems/${currentProblemId}/submit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code, language, usageData })
+        });
+        const data = await res.json();
+
+        const resultPanel = document.getElementById('resultPanel');
+        resultPanel.classList.remove('hidden');
+        const outputDiv = document.getElementById('resultOutput');
+
+        if (data.error) {
+          outputDiv.innerHTML = `<p class="text-red-600 font-bold">Error: ${data.error}</p>`;
+          return;
+        }
+
+        // data might contain compile errors, runtime errors, or accepted
+        if (data.result === "Wrong Answer") {
+          outputDiv.innerHTML = `<p class="text-red-600 font-bold">Wrong Answer</p>
+            <p><strong>Output:</strong> ${data.output}</p>
+            <p><strong>Expected:</strong> ${data.expected}</p>`;
+        } else if (data.result === "Accepted") {
+          outputDiv.innerHTML = `<p class="text-green-600 font-bold">Accepted!</p>
+            <p><strong>Output:</strong> ${data.output}</p>
+            <p><strong>Honest Points:</strong> ${data.honestPoints || 0}</p>`;
+        } else if (data.result === "Compilation Error") {
+          outputDiv.innerHTML = `<p class="text-red-600 font-bold">Compilation Error</p>
+            <pre>${data.compile_output || ''}</pre>`;
+        } else {
+          // Handle other statuses (Runtime Error, Time Limit Exceeded, etc.)
+          outputDiv.innerHTML = `<p class="text-red-600 font-bold">${data.result || 'Unknown Error'}</p>
+            <pre>${data.error || ''}</pre>`;
+        }
+      } catch (err) {
+        console.error('Submission error:', err);
+      }
+    });
+
+    // 7) View Solution
+    document.getElementById('solutionBtn').addEventListener('click', async () => {
+      try {
+        const res = await fetch(`/api/problems/${currentProblemId}/solution`);
+        const data = await res.json();
+        const solutionSection = document.getElementById('solutionSection');
+        const solutionText = document.getElementById('solutionText');
+        solutionText.textContent = data.solution || "No solution available.";
+        solutionSection.classList.remove('hidden');
+        document.getElementById('resultPanel').classList.remove('hidden');
+      } catch (err) {
+        alert('Error fetching solution');
+        console.error(err);
+      }
+    });
+
+    // Finally, load testcases and fetch the problem
+    loadTestcaseTabs();
+    fetchProblemDetails();
+
+    function loadTestcaseTabs() {
+      // Load multi-case tabs
+      const tabsContainer = document.getElementById('testcaseTabs');
+      tabsContainer.innerHTML = '';
+      testcases.forEach((tc, i) => {
+        const tab = document.createElement('div');
+        tab.classList.add('testcase-tab');
+        tab.textContent = tc.name;
+        if (tc.active) tab.classList.add('active');
+        tab.addEventListener('click', () => {
+          testcases.forEach(t => t.active = false);
+          tc.active = true;
+          loadTestcaseTabs();
+        });
+        tabsContainer.appendChild(tab);
+      });
+      // Show the input of the active testcase
+      loadTestcaseContent();
+    }
+    function loadTestcaseContent() {
+      const contentDiv = document.getElementById('testcaseContent');
+      const activeTC = testcases.find(t => t.active);
+      contentDiv.innerHTML = `<p>${activeTC.input}</p>`;
+    }
+  </script>
+</body>
+</html>

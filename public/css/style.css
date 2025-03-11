@@ -1,0 +1,202 @@
+/* public/css/style.css */
+
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4f7f9;
+  color: #333;
+  transition: background 0.3s, color 0.3s;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header */
+header {
+  background: #ffffff;
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+header nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+header nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+header nav ul li a:hover {
+  color: #007BFF;
+}
+#theme-toggle {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #007BFF;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+#theme-toggle:hover {
+  background: #0056b3;
+}
+
+/* Hero Section (index.html) */
+.hero {
+  position: relative;
+  background: url('https://via.placeholder.com/1200x600') no-repeat center center/cover;
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+.hero-content {
+  position: relative;
+  text-align: center;
+  color: #fff;
+  animation: fadeIn 1.5s ease-in-out;
+}
+.hero-content h2 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+.hero-content p {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+.btn {
+  background: #007BFF;
+  color: #fff;
+  padding: 1rem 2rem;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+.btn:hover {
+  background: #0056b3;
+}
+
+/* Lists and Tables */
+ul {
+  list-style: none;
+  padding: 1rem;
+}
+ul li {
+  background: #fff;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+table.leaderboard {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+table.leaderboard th,
+table.leaderboard td {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+/* Challenge Page */
+.challenge .timer {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+.challenge textarea {
+  width: 100%;
+  height: 200px;
+  padding: 1rem;
+  font-family: 'Courier New', monospace;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  margin-bottom: 1rem;
+}
+.challenge button {
+  background: #007BFF;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.challenge button:hover {
+  background: #0056b3;
+}
+
+/* Community Page */
+.community-container {
+  display: flex;
+}
+.sidebar {
+  width: 25%;
+  padding: 1rem;
+  border-right: 1px solid #ccc;
+}
+.chat-area {
+  width: 75%;
+  padding: 1rem;
+}
+
+/* Footer */
+footer {
+  background: #007BFF;
+  color: #fff;
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: 2rem;
+}
+
+/* Dark Mode */
+body.dark-mode {
+  background: #222;
+  color: #ddd;
+}
+body.dark-mode header,
+body.dark-mode footer {
+  background: #333;
+}
+body.dark-mode a {
+  color: #ddd;
+}
+body.dark-mode .btn {
+  background: #0056b3;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
